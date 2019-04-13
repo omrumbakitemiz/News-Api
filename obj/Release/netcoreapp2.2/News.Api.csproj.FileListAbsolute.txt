@@ -1,0 +1,14 @@
+/Users/omrumbakitemiz/dev/yazlab2.2/News/News.Api/bin/Release/netcoreapp2.2/News.Api.deps.json
+/Users/omrumbakitemiz/dev/yazlab2.2/News/News.Api/bin/Release/netcoreapp2.2/News.Api.runtimeconfig.json
+/Users/omrumbakitemiz/dev/yazlab2.2/News/News.Api/bin/Release/netcoreapp2.2/News.Api.runtimeconfig.dev.json
+/Users/omrumbakitemiz/dev/yazlab2.2/News/News.Api/bin/Release/netcoreapp2.2/News.Api.dll
+/Users/omrumbakitemiz/dev/yazlab2.2/News/News.Api/bin/Release/netcoreapp2.2/News.Api.pdb
+/Users/omrumbakitemiz/dev/yazlab2.2/News/News.Api/obj/Release/netcoreapp2.2/News.Api.csprojAssemblyReference.cache
+/Users/omrumbakitemiz/dev/yazlab2.2/News/News.Api/obj/Release/netcoreapp2.2/News.Api.csproj.CoreCompileInputs.cache
+/Users/omrumbakitemiz/dev/yazlab2.2/News/News.Api/obj/Release/netcoreapp2.2/News.Api.RazorAssemblyInfo.cache
+/Users/omrumbakitemiz/dev/yazlab2.2/News/News.Api/obj/Release/netcoreapp2.2/News.Api.RazorAssemblyInfo.cs
+/Users/omrumbakitemiz/dev/yazlab2.2/News/News.Api/obj/Release/netcoreapp2.2/News.Api.AssemblyInfoInputs.cache
+/Users/omrumbakitemiz/dev/yazlab2.2/News/News.Api/obj/Release/netcoreapp2.2/News.Api.AssemblyInfo.cs
+/Users/omrumbakitemiz/dev/yazlab2.2/News/News.Api/obj/Release/netcoreapp2.2/News.Api.RazorTargetAssemblyInfo.cache
+/Users/omrumbakitemiz/dev/yazlab2.2/News/News.Api/obj/Release/netcoreapp2.2/News.Api.dll
+/Users/omrumbakitemiz/dev/yazlab2.2/News/News.Api/obj/Release/netcoreapp2.2/News.Api.pdb
