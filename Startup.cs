@@ -32,11 +32,11 @@ namespace News.Api
                 options.AddPolicy("default", policy =>
                 {
                     policy
-                  .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .WithOrigins("http://localhost:8100", "http://localhost:4200", "capacitor://localhost",
-                      "http://localhost", "http://10.60.177.229:8100")
-                  .AllowCredentials();
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .WithOrigins("http://localhost:8100", "http://localhost:4200", "capacitor://localhost",
+                            "http://localhost", "http://10.60.177.229:8100", "https://immino-news-web.herokuapp.com")
+                        .AllowCredentials();
                 });
             });
 
