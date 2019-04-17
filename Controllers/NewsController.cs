@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using News.Api.Models;
@@ -26,7 +27,7 @@ namespace News.Api.Controllers
             return Ok(news);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize]
         public async Task<IActionResult> GetSingleNews(string id)
         {
             var foundedNews = await FindNews(id);
@@ -34,7 +35,7 @@ namespace News.Api.Controllers
             return Ok(foundedNews);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<IActionResult> AddNews([FromBody] Models.News news)
         {
             _context.News.Add(news);
@@ -44,7 +45,7 @@ namespace News.Api.Controllers
             return Ok(news);
         }
 
-        [HttpGet("newsTypes")]
+        [HttpGet("newsTypes"), Authorize]
         public IActionResult GetAllNewsTypes()
         {
             var newsTypes = Enum.GetValues(typeof(NewsType));
@@ -52,7 +53,7 @@ namespace News.Api.Controllers
             return Ok(newsTypes);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize]
         public async Task<IActionResult> DeleteNews(string id)
         {
             var foundedNews = await FindNews(id);
@@ -64,7 +65,7 @@ namespace News.Api.Controllers
             return Ok();
         }
 
-        [HttpGet("like/{id}")]
+        [HttpGet("like/{id}"), Authorize]
         public async Task<IActionResult> LikeNews(string id)
         {
             var foundedNews = await FindNews(id);
@@ -76,7 +77,7 @@ namespace News.Api.Controllers
             return Ok(foundedNews);
         }
         
-        [HttpGet("dislike/{id}")]
+        [HttpGet("dislike/{id}"), Authorize]
         public async Task<IActionResult> DislikeNews(string id)
         {
             var foundedNews = await FindNews(id);
@@ -88,7 +89,7 @@ namespace News.Api.Controllers
             return Ok(foundedNews);
         }
         
-        [HttpGet("view/{id}")]
+        [HttpGet("view/{id}"), Authorize]
         public async Task<IActionResult> IncreaseViewCount(string id)
         {
             var foundedNews = await FindNews(id);

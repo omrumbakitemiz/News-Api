@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using News.Api.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
@@ -28,7 +29,6 @@ namespace News.Api
 
             services.AddCors(options =>
             {
-                // this defines a CORS policy called "default"
                 options.AddPolicy("default", policy =>
                 {
                     policy
@@ -61,6 +61,10 @@ namespace News.Api
                     }
                 });
             });
+
+            services
+                .AddDefaultIdentity<User>()
+                .AddEntityFrameworkStores<NewsDbContext>();
 
             services.AddSignalR();
 
