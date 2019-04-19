@@ -42,7 +42,12 @@ namespace News.Api.Controllers
             if (!result.Succeeded) return BadRequest("Invalid Credentials");
 
             var appUser = _userManager.Users.SingleOrDefault(r => r.UserName == user.UserName);
-            return _jwtTokenGenerator.GenerateJwtToken(user.UserName, appUser);
+            var loginResource = new LoginResource
+            {
+                Token = _jwtTokenGenerator.GenerateJwtToken(user.UserName, appUser),
+                User = appUser
+            };
+            return loginResource;
         }
 
         [HttpPost]
@@ -59,7 +64,6 @@ namespace News.Api.Controllers
                 
                 var registerResource = new RegisterResource
                 {
-                    User = newUser,
                     Token = _jwtTokenGenerator.GenerateJwtToken(user.UserName, newUser)
                 };
                 
