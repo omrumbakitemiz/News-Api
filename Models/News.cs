@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace News.Api.Models
 {
@@ -13,5 +15,11 @@ namespace News.Api.Models
         public string Type { get; set; }
         public int DislikeCount { get; set; }
         public int ViewCount { get; set; }
+        public ICollection<UserNews> UserNews { get; set; }
+
+        public News()
+        {
+            UserNews = new Collection<UserNews>();
+        }
     }
 }

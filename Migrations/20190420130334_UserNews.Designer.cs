@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using News.Api;
 
 namespace News.Api.Migrations
 {
     [DbContext(typeof(NewsDbContext))]
-    partial class NewsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190420130334_UserNews")]
+    partial class UserNews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -271,7 +273,7 @@ namespace News.Api.Migrations
             modelBuilder.Entity("News.Api.Models.UserNews", b =>
                 {
                     b.HasOne("News.Api.Models.News", "News")
-                        .WithMany("UserNews")
+                        .WithMany()
                         .HasForeignKey("NewsId")
                         .OnDelete(DeleteBehavior.Cascade);
 

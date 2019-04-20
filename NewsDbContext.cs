@@ -11,5 +11,13 @@ namespace News.Api
         { }
 
         public DbSet<Models.News> News { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            
+            builder.Entity<UserNews>()
+                .HasKey(up => new { up.UserId, up.NewsId });
+        }
     }
 }

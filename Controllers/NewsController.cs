@@ -1,14 +1,17 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.IdentityModel.JsonWebTokens;
 using News.Api.Models;
 
 namespace News.Api.Controllers
 {
-    [Route("/api/[controller]")]
+    [Route("api/[controller]")]
+    [Authorize]
     public class NewsController : Controller
     {
         private readonly NewsDbContext _context;
@@ -27,7 +30,7 @@ namespace News.Api.Controllers
             return Ok(news);
         }
 
-        [HttpGet("{id}"), Authorize]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetSingleNews(string id)
         {
             var foundedNews = await FindNews(id);
@@ -35,7 +38,7 @@ namespace News.Api.Controllers
             return Ok(foundedNews);
         }
 
-        [HttpPost, Authorize]
+        [HttpPost]
         public async Task<IActionResult> AddNews([FromBody] Models.News news)
         {
             _context.News.Add(news);
@@ -45,7 +48,7 @@ namespace News.Api.Controllers
             return Ok(news);
         }
 
-        [HttpGet("newsTypes"), Authorize]
+        [HttpGet("newsTypes")]
         public IActionResult GetAllNewsTypes()
         {
             var newsTypes = Enum.GetValues(typeof(NewsType));
@@ -53,59 +56,77 @@ namespace News.Api.Controllers
             return Ok(newsTypes);
         }
 
-        [HttpDelete("{id}"), Authorize]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNews(string id)
         {
             var foundedNews = await FindNews(id);
-            
+
             _context.News.Remove(foundedNews);
             await _context.SaveChangesAsync();
-            await _hubContext.Clients.All.SendAsync("DeleteNews", (Models.News)foundedNews);
-            
+            await _hubContext.Clients.All.SendAsync("DeleteNews", (Models.News) foundedNews);
+
             return Ok();
         }
 
-        [HttpGet("like/{id}"), Authorize]
+        [HttpGet("like/{id}")]
         public async Task<IActionResult> LikeNews(string id)
         {
-            var foundedNews = await FindNews(id);
+            var foundedNews = await FindNews(id) as Models.News;
+            var (canLike, userId) = CanLikeOrDislikeNews(foundedNews);
+            if (!canLike) return Forbid();
 
             foundedNews.LikeCount++;
-            await _context.SaveChangesAsync();
-            await _hubContext.Clients.All.SendAsync("LikeNews", (Models.News)foundedNews);
+            foundedNews.UserNews.Add(new UserNews {UserId = userId});
             
+            await _context.SaveChangesAsync();
+            await _hubContext.Clients.All.SendAsync("LikeNews", foundedNews);
+
             return Ok(foundedNews);
         }
-        
-        [HttpGet("dislike/{id}"), Authorize]
+
+        [HttpGet("dislike/{id}")]
         public async Task<IActionResult> DislikeNews(string id)
         {
-            var foundedNews = await FindNews(id);
-            
+            var foundedNews = await FindNews(id) as Models.News;
+            var (canDislike, userId) = CanLikeOrDislikeNews(foundedNews);
+            if (!canDislike) return Forbid();
+
             foundedNews.DislikeCount++;
+            foundedNews.UserNews.Add(new UserNews {UserId = userId});
+
             await _context.SaveChangesAsync();
-            await _hubContext.Clients.All.SendAsync("DislikeNews", (Models.News)foundedNews);
-            
+            await _hubContext.Clients.All.SendAsync("DislikeNews", foundedNews);
+
             return Ok(foundedNews);
         }
-        
-        [HttpGet("view/{id}"), Authorize]
+
+        [HttpGet("view/{id}")]
         public async Task<IActionResult> IncreaseViewCount(string id)
         {
             var foundedNews = await FindNews(id);
-            
+
             foundedNews.ViewCount++;
             await _context.SaveChangesAsync();
-            await _hubContext.Clients.All.SendAsync("ViewNews", (Models.News)foundedNews);
-            
+            await _hubContext.Clients.All.SendAsync("ViewNews", (Models.News) foundedNews);
+
             return Ok(foundedNews);
         }
 
         private async Task<dynamic> FindNews(string id)
         {
             var foundedNews = await _context.News.FindAsync(id);
-            if (foundedNews == null)return false;
+            if (foundedNews == null) return false;
             return foundedNews;
+        }
+
+        private (bool, string) CanLikeOrDislikeNews(Models.News news)
+        {
+            var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+            var foundedUserNews = _context.Set<UserNews>().Where(userNews => userNews.NewsId == news.Id)
+                .Where(userNews => userNews.UserId == userId).Any();
+
+            return (!foundedUserNews, userId);
         }
     }
 }
