@@ -1,15 +1,12 @@
 using System;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.IdentityModel.JsonWebTokens;
 using News.Api.Models;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace News.Api.Controllers
