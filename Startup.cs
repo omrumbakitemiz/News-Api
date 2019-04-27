@@ -93,6 +93,8 @@ namespace News.Api
 
             services.AddSignalR();
 
+            services.AddHttpClient();
+
             // services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddMvc()
